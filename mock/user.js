@@ -29,6 +29,7 @@ export default [
     url: '/vue-element-admin/user/login',
     type: 'post',
     response: config => {
+      debugger
       const { username } = config.body
       const token = tokens[username]
 
