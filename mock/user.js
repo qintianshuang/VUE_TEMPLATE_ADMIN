@@ -26,7 +26,7 @@ const users = {
 export default [
   // user login
   {
-    url: '/vue-element-admin/user/login',
+    url: '/user/login',
     type: 'post',
     response: config => {
       debugger
@@ -50,12 +50,12 @@ export default [
 
   // get user info
   {
-    url: '/vue-element-admin/user/info\.*',
+    url: '/user/info\.*',
     type: 'get',
     response: config => {
       const { token } = config.query
       const info = users[token]
-
+      debugger
       // mock error
       if (!info) {
         return {
@@ -63,7 +63,7 @@ export default [
           message: 'Login failed, unable to get user details.'
         }
       }
-
+      debugger
       return {
         code: 20000,
         data: info
@@ -73,7 +73,7 @@ export default [
 
   // user logout
   {
-    url: '/vue-element-admin/user/logout',
+    url: '/user/logout',
     type: 'post',
     response: _ => {
       return {
