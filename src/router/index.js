@@ -90,63 +90,22 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  // {
-  //   path: '/permission',
-  //   component: Layout,
-  //   redirect: '/permission/page',
-  //   alwaysShow: true, // will always show the root menu
-  //   name: 'Permission',
-  //   meta: {
-  //     title: '权限设置',
-  //     icon: 'lock',
-  //     roles: ['admin', 'editor'] // you can set roles in root nav
-  //   },
-  //   children: [
-  //     {
-  //       path: 'page',
-  //       component: () => import('@/views/permission/page'),
-  //       name: 'PagePermission',
-  //       meta: {
-  //         title: '页面权限',
-  //         roles: ['admin'] // or you can only set roles in sub nav
-  //       }
-  //     },
-  //     {
-  //       path: 'directive',
-  //       component: () => import('@/views/permission/directive'),
-  //       name: 'DirectivePermission',
-  //       meta: {
-  //         title: '指令权限'
-  //         // if do not set roles, means: this page does not require permission
-  //       }
-  //     },
-  //     {
-  //       path: 'role',
-  //       component: () => import('@/views/permission/role'),
-  //       name: 'RolePermission',
-  //       meta: {
-  //         title: '角色权限',
-  //         roles: ['admin']
-  //       }
-  //     }
-  //   ]
-  // },
   {
-    path: '/employee',
+    path: '/user',
     component: Layout,
-    redirect: '/employee/index',
+    redirect: '/user/info',
     alwaysShow: true, // will always show the root menu
-    name: 'Employee',
+    name: 'User',
     meta: {
       title: '用户中心',
-      icon: 'lock',
+      icon: 'peoples',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
     children: [
       {
-        path: 'page',
-        component: () => import('@/views/employee/index'),
-        name: 'QueryEmployee',
+        path: 'info',
+        component: () => import('@/views/user/info'),
+        name: 'Info',
         meta: {
           title: '用户查询',
           roles: ['admin'] // or you can only set roles in sub nav

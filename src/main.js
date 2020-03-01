@@ -12,7 +12,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-
+// import Notice from 'iview'
 import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
@@ -42,6 +42,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
+Vue.prototype.$Notice = Element
 
 new Vue({
   el: '#app',

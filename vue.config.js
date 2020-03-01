@@ -30,12 +30,38 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
+    // host: 'www.xiaofiyang.com',
     port: port,
     open: true,
     overlay: {
       warnings: false,
       errors: true
     },
+    disableHostCheck: true,
+    proxy: {
+      '/api': {
+        target: 'http://www.xiaofeiyang.com',
+        changeOrigin: true,
+        secure: false,
+        ws: true, // 是否启用websockets
+        pathRewrite: {
+          '^/api': '/' // 注意名字
+        }
+      }
+    },
+    // disableHostCheck: true,
+    // allowedHosts: [
+    //   'www.xiaofiyang.com'
+    // ],
+    // proxyTable: {
+    //   '/apis': {
+    //     target: 'www.xiaofiyang.com', // 域名,主要修改这一块
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       '^/apis': '/' // 注意名字
+    //     }
+    //   }
+    // },
     before: require('./mock/mock-server.js')
   },
   configureWebpack: {
@@ -93,7 +119,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()

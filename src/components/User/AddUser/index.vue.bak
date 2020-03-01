@@ -1,0 +1,125 @@
+<template>
+  <div>
+    <el-dialog :title="titles" :visible.sync="dialogVisible" width="40%" :before-close="handleClose">
+      <div class="demo-input-suffix">
+        名&#12288;&#12288;&#12288;称：
+        <el-input
+          placeholder="请输入"
+          v-model="empForm.empName" style="width: 200px;">
+        </el-input>
+        &#12288;&#12288;&#12288;年&#12288;&#12288;龄：
+        <el-input placeholder="请输入" v-model="empForm.age" style="width: 200px;">
+        </el-input>
+      </div>
+      <div class="demo-input-suffix">
+        身份证号码：
+        <el-input
+          placeholder="请输入"
+          v-model="empForm.identityCard" style="width: 200px;">
+        </el-input>
+        &#12288;&#12288;&#12288;家庭住址：
+        <el-input
+          placeholder="请输入"
+          v-model="empForm.liveAddress" style="width: 200px;">
+        </el-input>
+      </div>
+      <div class="demo-input-suffix">
+        现居住地&#12288;：
+        <el-input
+          placeholder="请输入"
+          v-model="empForm.familyAddress" style="width: 200px;">
+        </el-input>
+        &#12288;&#12288;&#12288;电话号码：
+        <el-input
+          placeholder="请输入"
+          v-model="empForm.phone" style="width: 200px;">
+        </el-input>
+      </div>
+      <div class="demo-input-suffix">
+        邮&#12288;&#12288;&#12288;箱：
+        <el-input
+          placeholder="请输入"
+          v-model="empForm.email" style="width: 200px;">
+        </el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="ok">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+<script>
+import { string } from 'jszip/lib/support'
+import { saveEmployee } from '@/api/employee'
+export default {
+  name: 'AddUser',
+  props: {
+    titles: {
+      type: string,
+      default: ''
+    }
+  },
+  data() {
+    return {
+      dialogVisible: false,
+      title: this.titles,
+      empForm: {
+        empNo: '  l8',
+        empName: '小兰',
+        age: '12',
+        identityCard: '2252345235235',
+        liveAddress: '时间思考思考',
+        familyAddress: '人员还挺好听',
+        phone: '123455555',
+        email: '1233455@qq.com'
+      }
+    }
+  },
+  watch: {
+    titles() {
+      debugger
+      this.dialogVisible = true
+    }
+  },
+  methods: {
+    ok() {
+      debugger
+      this.save()
+      this.dialogVisible = false
+    },
+    cancel() {
+      debugger
+      this.$confirm('确认取消？')
+        .then(_ => {
+          this.dialogVisible = false
+        })
+        .catch(_ => {})
+    },
+    handleClose(done) {
+      debugger
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.dialogVisible = false
+        })
+        .catch(_ => {})
+    },
+    save() {
+      saveEmployee(this.empForm).then(response => {
+        if (response.success) {
+          this.$notify({
+            title: '成功',
+            message: '保存成功',
+            type: 'success'
+          })
+        } else {
+          this.$notify.error({
+            title: '错误',
+            message: response.message
+          })
+        }       
+      })
+    }
+  }
+}
+</script>

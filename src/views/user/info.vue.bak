@@ -3,20 +3,14 @@
     <div class="filter-container">
       姓名：
       <el-input v-model="empName" value="empName" placeholder="请输入" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="Search">
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="Search">
         Search
-      </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        Export
       </el-button>
     </div>
     <div class="filter-container">
-      <el-button v-waves class="filter-item" type="primary" @click="add">
+      <el-button class="filter-item" type="primary" @click="add">
         新增
       </el-button>
-    </div>
-    <div>
-      <addUser :model="addModle" />
     </div>
     <el-table
       :data="tableData"
@@ -84,22 +78,33 @@
         </template>
       </el-table-column>
     </el-table>
+    <div>
+      <el-dialog :title="title" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+        <addUser />
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="ok">取 消</el-button>
+          <el-button type="primary" @click="cancel">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
-import addUser from './addUser'
+import AddUser from '@/components/User/AddUser'
 import { queryEmpByName } from '@/api/employee'
 export default {
   data() {
     return {
       empName: '小红',
       addModle: false,
-      tableData: []
+      tableData: [],
+      dialogVisible: false,
+      title: ''
     }
   },
   component: {
-    addUser
+    AddUser
   },
   methods: {
     Search() {
@@ -118,26 +123,27 @@ export default {
     },
     handleEdit(index, row) {
       console.log(index, row)
-      this.MessageBoxTitle = '编辑用户'
-      // this.button='编辑'
-      this.editdata = row
-      this.$refs.chirld.open
-      this.centerDialogVisible = true
     },
     handleDelete(index, row) {
       console.log(index, row)
     },
-    // add(){
-    // //   this.MessageBoxTitle = '增加用户'
-    // //   // this.button='增加'
-    // //   this.editdata = row
-    // //   this.$refs.chirld.open
-    // //   // this.centerDialogVisible = true
-    // },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
+    },
     add() {
       debugger
-      // this.$refs.chirld.open
-      this.addModle = true
+      this.title = '新增用户'
+      this.dialogVisible = true
+    },
+    ok() {
+      this.dialogVisible = false
+    },
+    cancel() {
+      this.dialogVisible = false
     }
   }
 }

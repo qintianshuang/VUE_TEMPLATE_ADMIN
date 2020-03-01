@@ -7,3 +7,33 @@ export function queryEmpByName(data) {
     params: data
   })
 }
+export function saveEmployee(data) {
+  return request({
+    url: '/employee/saveEmployee',
+    method: 'post',
+    data
+  })
+}
+export function editEmployee(data) {
+  return request({
+    url: '/employee/editEmployee',
+    method: 'post',
+    data
+  })
+}
+export function deleteEmployee(data) {
+  return request({
+    url: '/employee/deleteEmployee',
+    method: 'delete',
+    params: data
+  })
+}
+
+export function downloadEmpTemplate(data) {
+  return request({
+    url: '/employee/downloadEmpTemplate',
+    method: 'post',
+    params: data,
+    responseType: 'blob'
+  })
+}
