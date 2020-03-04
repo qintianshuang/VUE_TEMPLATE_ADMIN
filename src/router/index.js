@@ -93,7 +93,7 @@ export const asyncRoutes = [
   {
     path: '/user',
     component: Layout,
-    redirect: '/user/info',
+    redirect: '/user/index',
     alwaysShow: true, // will always show the root menu
     name: 'User',
     meta: {
@@ -103,11 +103,34 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'info',
-        component: () => import('@/views/user/info'),
-        name: 'Info',
+        path: 'user',
+        component: () => import('@/views/user/index'),
+        name: 'user',
         meta: {
           title: '用户查询',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
+  {
+    path: '/xtcs',
+    component: Layout,
+    redirect: '/xtcs/index',
+    alwaysShow: true, // will always show the root menu
+    name: 'Xtcs',
+    meta: {
+      title: '系统设置',
+      icon: 'peoples',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'xtcs',
+        component: () => import('@/views/xtcs/index'),
+        name: 'xtcs',
+        meta: {
+          title: '系统参数',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       }

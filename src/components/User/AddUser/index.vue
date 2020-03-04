@@ -91,7 +91,8 @@ export default {
     }
   },
   methods: {
-    init() {
+    init(data) {
+      console.log(data)
       this.visible = true
       this.empForm.empNo = ''
       this.empForm.empName = ''
@@ -101,6 +102,16 @@ export default {
       this.empForm.familyAddress = ''
       this.empForm.phone = ''
       this.empForm.email = ''
+      if (data != null) {
+        this.empForm.empNo = data.empNo
+        this.empForm.empName = data.empName
+        this.empForm.age = data.age
+        this.empForm.identityCard = data.identityCard
+        this.empForm.liveAddress = data.liveAddress
+        this.empForm.familyAddress = data.familyAddress
+        this.empForm.phone = data.phone
+        this.empForm.email = data.email
+      }
     },
     // v-el-drag-dialog onDrag callback function
     handleDrag() {
@@ -121,7 +132,7 @@ export default {
         if (response.success) {
           this.$notify({
             title: '成功',
-            message: '保存成功',
+            message: '修改成功',
             type: 'success'
           })
           this.visible = false

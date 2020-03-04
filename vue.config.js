@@ -40,9 +40,9 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       '/api': {
-        target: 'http://www.xiaofeiyang.com',
+        target: 'http://www.myadmin.com',
         changeOrigin: true,
-        secure: false,
+        // secure: false,
         ws: true, // 是否启用websockets
         pathRewrite: {
           '^/api': '/' // 注意名字

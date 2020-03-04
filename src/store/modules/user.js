@@ -109,9 +109,9 @@ const actions = {
 
       commit('SET_TOKEN', token)
       setToken(token)
-
+      debugger
       const { roles } = await dispatch('getInfo')
-
+      debugger
       resetRouter()
 
       // generate accessible routes map based on roles

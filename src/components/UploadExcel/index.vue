@@ -1,28 +1,32 @@
 <template>
   <div>
-    <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
-    <div class="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
-      Drop excel file here or
-      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">
-        Browse
-      </el-button>
-    </div>
+    <input
+      ref="excel-upload-input"
+      class="excel-upload-input"
+      type="file"
+      accept=".xlsx, .xls"
+      @change="handleClick"
+    >
   </div>
 </template>
 
 <script>
 import XLSX from 'xlsx'
-
+const formData = new FormData()
 export default {
   props: {
     beforeUpload: Function, // eslint-disable-line
-    onSuccess: Function// eslint-disable-line
+    onSuccess: Function, // eslint-disable-line
+    outFile: Function // eslint-disable-line
   },
   data() {
     return {
       loading: false,
       excelData: {
         header: null,
+        results: null
+      },
+      fileData: {
         results: null
       }
     }
@@ -58,6 +62,7 @@ export default {
       e.dataTransfer.dropEffect = 'copy'
     },
     handleUpload() {
+      this.rawFile = null
       this.$refs['excel-upload-input'].click()
     },
     handleClick(e) {
@@ -65,6 +70,11 @@ export default {
       const rawFile = files[0] // only use files[0]
       if (!rawFile) return
       this.upload(rawFile)
+      console.log(rawFile)
+      formData.append('file', rawFile)
+      console.log(formData)
+      this.fileData.results = formData
+      this.outFile && this.outFile(this.fileData)
     },
     upload(rawFile) {
       this.$refs['excel-upload-input'].value = null // fix can't select the same excel
@@ -119,11 +129,11 @@ export default {
 </script>
 
 <style scoped>
-.excel-upload-input{
+.excel-upload-input {
   display: none;
   z-index: -9999;
 }
-.drop{
+.drop {
   border: 2px dashed #bbb;
   width: 600px;
   height: 160px;

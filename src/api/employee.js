@@ -37,3 +37,15 @@ export function downloadEmpTemplate(data) {
     responseType: 'blob'
   })
 }
+
+export function exportEmpList(data) {
+  debugger
+  return request({
+    url: '/employee/exportEmpList',
+    method: 'post',
+    params: data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

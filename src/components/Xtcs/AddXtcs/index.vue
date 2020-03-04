@@ -2,49 +2,25 @@
   <div class="components-container">
     <el-dialog v-el-drag-dialog :close-on-click-modal="false" :visible.sync="visible" :title="title" @dragDialog="handleDrag">
       <div class="demo-input-suffix">
-        名&#12288;&#12288;&#12288;称：
+        <label>参&#12288;数&#12288;名：</label>
         <el-input
-          v-model="empForm.empName"
+          v-model="xtcsForm.paramCode"
           placeholder="请输入"
-          style="width: 200px;"
-        />
-        &#12288;&#12288;&#12288;年&#12288;&#12288;龄：
-        <el-input v-model="empForm.age" placeholder="请输入" style="width: 200px;" />
-      </div>
-      <div class="demo-input-suffix">
-        身份证号码：
-        <el-input
-          v-model="empForm.identityCard"
-          placeholder="请输入"
-          style="width: 200px;"
-        />
-        &#12288;&#12288;&#12288;家庭住址：
-        <el-input
-          v-model="empForm.liveAddress"
-          placeholder="请输入"
-          style="width: 200px;"
+          style="width: 600px;"
         />
       </div>
       <div class="demo-input-suffix">
-        现居住地&#12288;：
-        <el-input
-          v-model="empForm.familyAddress"
-          placeholder="请输入"
-          style="width: 200px;"
-        />
-        &#12288;&#12288;&#12288;电话号码：
-        <el-input
-          v-model="empForm.phone"
-          placeholder="请输入"
-          style="width: 200px;"
-        />
+        <label>描&#12288;&#12288;&#12288;述：</label>
+        <el-input v-model="xtcsForm.paramValue" type="textarea" autosize placeholder="请输入" style="width: 600px;" />
       </div>
       <div class="demo-input-suffix">
-        邮&#12288;&#12288;&#12288;箱：
+        <label>描&#12288;&#12288;&#12288;述：</label>
         <el-input
-          v-model="empForm.email"
+          v-model="xtcsForm.paramDesc"
+          type="textarea"
+          autosize
           placeholder="请输入"
-          style="width: 200px;"
+          style="maxWidth: 600px;"
         />
       </div>
       <span slot="footer" class="dialog-footer">
@@ -54,21 +30,16 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
 import elDragDialog from '@/directive/el-drag-dialog' // base on element-ui
 import { string } from 'jszip/lib/support'
-import { editEmployee } from '@/api/employee'
+import { saveXtcs } from '@/api/xtcs'
 
 export default {
-  name: 'EditUser',
+  name: 'AddXtcs',
   directives: { elDragDialog },
   props: {
     titles: {
-      type: string,
-      default: ''
-    },
-    editdata: {
       type: string,
       default: ''
     }
@@ -77,37 +48,30 @@ export default {
     return {
       visible: false,
       title: this.titles,
-      empForm: {
-        empNo: '',
-        empName: '',
-        age: '',
-        identityCard: '',
-        liveAddress: '',
-        familyAddress: '',
-        phone: '',
-        email: ''
+      xtcsForm: {
+        xh: '',
+        paramCode: '',
+        paramValue: '',
+        paramDesc: ''
       }
     }
   },
   watch: {
     titles() {
       this.title = this.titles
-    },
-    editdata() {
-      this.empForm = this.editdata
     }
   },
   methods: {
     init(data) {
       this.visible = true
-      this.empForm.empNo = data.empNo
-      this.empForm.empName = data.empName
-      this.empForm.age = data.age
-      this.empForm.identityCard = data.identityCard
-      this.empForm.liveAddress = data.liveAddress
-      this.empForm.familyAddress = data.familyAddress
-      this.empForm.phone = data.phone
-      this.empForm.email = data.email
+      this.xtcsForm.paramCode = ''
+      this.xtcsForm.paramValue = ''
+      this.xtcsForm.paramDesc = ''
+      if (data != null) {
+        this.xtcsForm.paramCode = data.paramCode
+        this.xtcsForm.paramValue = data.paramValue
+        this.xtcsForm.paramDesc = data.paramDesc
+      }
     },
     // v-el-drag-dialog onDrag callback function
     handleDrag() {
@@ -124,7 +88,7 @@ export default {
         .catch(_ => {})
     },
     save() {
-      editEmployee(this.empForm).then(response => {
+      saveXtcs(this.xtcsForm).then(response => {
         if (response.success) {
           this.$notify({
             title: '成功',

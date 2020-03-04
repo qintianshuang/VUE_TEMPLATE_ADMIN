@@ -9,7 +9,7 @@
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         下载模板
       </el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="exportDownload">
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="clickUpload">
         导入
       </el-button>
     </div>
@@ -22,10 +22,13 @@
       <add-user ref="addchild" :titles="title" />
     </div>
     <div>
-      <edit-user ref="editchild" :titles="title" :editdata="editdata" />
+      <edit-user ref="editchild" :titles="title" />
     </div>
-    <div>
+    <!-- <div>
       <copy-user ref="copychild" :titles="title" :editdata="editdata" />
+    </div> -->
+    <div class="app-container">
+      <upload-excel-component ref="uploadexcel" :out-file="handleFile" :before-upload="beforeUpload" />
     </div>
     <el-table
       :data="tableData"
@@ -114,11 +117,11 @@
 <script>
 import addUser from '@/components/User/AddUser'
 import editUser from '@/components/User/EditUser'
-import copyUser from '@/components/User/CopyUser'
-import { queryEmpByName, deleteEmployee, downloadEmpTemplate } from '@/api/employee'
+import UploadExcelComponent from '@/components/UploadExcel/index.vue'
+import { queryEmpByName, deleteEmployee, downloadEmpTemplate, exportEmpList } from '@/api/employee'
 export default {
   components: {
-    addUser, editUser, copyUser
+    addUser, editUser, UploadExcelComponent
   },
   data() {
     return {
@@ -126,11 +129,24 @@ export default {
       tableData: [],
       title: '操作界面',
       show: false,
-      editdata: '',
-      downloadLoading: false
+      downloadLoading: false,
+      empFile: null
     }
   },
   methods: {
+    beforeUpload(file) {
+      const isLt1M = file.size / 1024 / 1024 < 1
+
+      if (isLt1M) {
+        return true
+      }
+
+      this.$message({
+        message: 'Please do not upload files larger than 1m in size.',
+        type: 'warning'
+      })
+      return false
+    },
     Search() {
       const param = {
         name: this.empName,
@@ -154,55 +170,88 @@ export default {
     },
     handleEdit(index, row) {
       this.title = '编辑用户'
-      this.editdata = row
-      this.$refs.editchild.init()
+      this.$refs.editchild.init(row)
     },
     handleDelete(index, row) {
-      const param = {
-        empNo: row.empNo,
-        empName: row.empName,
-        identityCard: row.identityCard
-      }
-      deleteEmployee(param).then(response => {
-        if (response.success) {
-          this.tableData = response.data
-          this.$notify({
-            title: '成功',
-            message: '删除成功',
-            type: 'success'
+      this.$confirm('确认取消？')
+        .then(_ => {
+          const param = {
+            empNo: row.empNo,
+            empName: row.empName,
+            identityCard: row.identityCard
+          }
+          deleteEmployee(param).then(response => {
+            if (response.success) {
+              this.tableData = response.data
+              this.$notify({
+                title: '成功',
+                message: '删除成功',
+                type: 'success'
+              })
+              this.Search()
+            } else {
+              this.$notify.error({
+                title: '错误',
+                message: response.message
+              })
+            }
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
           })
-          this.Search()
+        })
+        .catch(_ => { })
+    },
+    add() {
+      this.title = '新增用户'
+      this.$refs.addchild.init(null)
+    },
+    handleCopy(index, row) {
+      console.log(row)
+      this.title = '复制用户信息'
+      this.$refs.addchild.init(row)
+    },
+    handleDownload() {
+      this.downloadLoading = true
+      downloadEmpTemplate().then(response => {
+        const fileName = '用户信息模板下载.xlsx'
+        const excelBlob = response.data
+        if ('msSaveOrOpenBlob' in navigator) {
+          // Microsoft Edge and Microsoft Internet Explorer 10-11
+          window.navigator.msSaveOrOpenBlob(excelBlob, fileName)
+        } else {
+          const elink = document.createElement('a')
+          elink.download = fileName
+          elink.style.display = 'none'
+          const blob = new Blob([excelBlob])
+          elink.href = URL.createObjectURL(blob)
+          document.body.appendChild(elink)
+          elink.click()
+          document.body.removeChild(elink)
+        }
+      })
+      this.downloadLoading = false
+    },
+    clickUpload() {
+      this.downloadLoading = true
+      this.$refs.uploadexcel.handleUpload()
+    },
+    handleFile({ results }) {
+      console.log(results)
+      const param = results
+      exportEmpList(param).then(response => {
+        console.log(response)
+        if (response.success) {
+          this.$notify.success({
+            title: '成功',
+            message: '上传成功'
+          })
         } else {
           this.$notify.error({
             title: '错误',
             message: response.message
           })
         }
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
-      })
-    },
-    add() {
-      this.title = '新增用户'
-      this.$refs.addchild.init()
-    },
-    handleCopy(index, row) {
-      this.title = '复制用户信息'
-      this.editdata = row
-      this.$refs.copychild.init()
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      downloadEmpTemplate().then(response => {
-        console.log(response)
-      })
-      this.downloadLoading = false
-    },
-    exportDownload() {
-      this.downloadLoading = true
-      downloadEmpTemplate().then(response => {
-        console.log(response)
       })
       this.downloadLoading = false
     }

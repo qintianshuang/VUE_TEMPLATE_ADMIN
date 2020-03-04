@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { MessageBox } from 'element-ui'
 import store from '@/store'
-import user from '@/api/user'
 import { getToken } from '@/utils/auth'
 
 // create an axios instance  192.168.43.178
 const service = axios.create({
   // baseURL: 'http://www.myadmin.com',
   baseURL: 'http://localhost:8783',
+  // baseURL: '/api',
   // url = base url + request url 192.168.72.1
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
@@ -48,18 +48,18 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-
+    if (res instanceof Blob) {
+      return response
+    }
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== '20000') {
       if (res.code === 'CLOUD-LOGIN-FAILURE') {
-        user.resetToken()
+        this.$store.dispatch('user/logout')
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
         return
-      }
-      if (res.code === 'CLOUD-100') {
+      } else if (res.code === 'CLOUD-100' || res.code === 'CLOUD-500') {
         return res
-      }
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === '50008' || res.code === '50012' || res.code === '50014') {
+      } else if (res.code === '50008' || res.code === '50012' || res.code === '50014') {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
