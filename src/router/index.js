@@ -121,7 +121,7 @@ export const asyncRoutes = [
     name: 'Xtcs',
     meta: {
       title: '系统设置',
-      icon: 'peoples',
+      icon: 'component',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
     children: [
@@ -144,7 +144,7 @@ export const asyncRoutes = [
     name: 'Xgmsb',
     meta: {
       title: '申报数据',
-      icon: 'peoples',
+      icon: 'chart',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
     children: [
