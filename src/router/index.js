@@ -128,9 +128,32 @@ export const asyncRoutes = [
       {
         path: 'xtcs',
         component: () => import('@/views/xtcs/index'),
-        name: 'xtcs',
+        name: 'Xtcs',
         meta: {
           title: '系统参数',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
+  {
+    path: '/xgmsb',
+    component: Layout,
+    redirect: '/xgmsb/index',
+    alwaysShow: true, // will always show the root menu
+    name: 'Xgmsb',
+    meta: {
+      title: '申报数据',
+      icon: 'peoples',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'fp',
+        component: () => import('@/views/xgmsb/fp/index'),
+        name: 'Fp',
+        meta: {
+          title: '发票数据',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       }
