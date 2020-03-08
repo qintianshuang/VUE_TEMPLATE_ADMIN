@@ -1,52 +1,29 @@
 <template>
   <div class="components-container">
-    <el-dialog v-el-drag-dialog :close-on-click-modal="false" :visible.sync="visible" :title="title" @dragDialog="handleDrag">
-      <div class="demo-input-suffix">
-        名&#12288;&#12288;&#12288;称：
-        <el-input
-          v-model="empForm.empName"
-          placeholder="请输入"
-          style="width: 200px;"
-        />
-        &#12288;&#12288;&#12288;年&#12288;&#12288;龄：
-        <el-input v-model="empForm.age" placeholder="请输入" style="width: 200px;" />
-      </div>
-      <div class="demo-input-suffix">
-        身份证号码：
-        <el-input
-          v-model="empForm.identityCard"
-          placeholder="请输入"
-          style="width: 200px;"
-        />
-        &#12288;&#12288;&#12288;家庭住址：
-        <el-input
-          v-model="empForm.liveAddress"
-          placeholder="请输入"
-          style="width: 200px;"
-        />
-      </div>
-      <div class="demo-input-suffix">
-        现居住地&#12288;：
-        <el-input
-          v-model="empForm.familyAddress"
-          placeholder="请输入"
-          style="width: 200px;"
-        />
-        &#12288;&#12288;&#12288;电话号码：
-        <el-input
-          v-model="empForm.phone"
-          placeholder="请输入"
-          style="width: 200px;"
-        />
-      </div>
-      <div class="demo-input-suffix">
-        邮&#12288;&#12288;&#12288;箱：
-        <el-input
-          v-model="empForm.email"
-          placeholder="请输入"
-          style="width: 200px;"
-        />
-      </div>
+    <el-dialog v-el-drag-dialog :close-on-click-modal="false" :visible.sync="visible" :title="title" style="width: 1400px;" @dragDialog="handleDrag">
+      <el-form :inline="true" :label-position="labelPosition" label-width="250px" :model="empForm" class="demo-form-inline">
+        <el-form-item label="名称：">
+          <el-input v-model="empForm.empName" />
+        </el-form-item>
+        <el-form-item label="年龄：">
+          <el-input v-model="empForm.age" />
+        </el-form-item>
+        <el-form-item label="身份证号码：">
+          <el-input v-model="empForm.identityCard" />
+        </el-form-item>
+        <el-form-item label="家庭住址：">
+          <el-input v-model="empForm.liveAddress" />
+        </el-form-item>
+        <el-form-item label="现居住地：">
+          <el-input v-model="empForm.familyAddress" />
+        </el-form-item>
+        <el-form-item label="电话号码：">
+          <el-input v-model="empForm.phone" />
+        </el-form-item>
+        <el-form-item label="邮箱：">
+          <el-input v-model="empForm.email" />
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="ok">保 存</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -77,6 +54,7 @@ export default {
     return {
       visible: false,
       title: this.titles,
+      labelPosition: 'right',
       empForm: {
         empNo: '',
         empName: '',

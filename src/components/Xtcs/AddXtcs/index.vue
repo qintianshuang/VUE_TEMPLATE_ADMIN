@@ -1,30 +1,53 @@
 <template>
   <div class="components-container">
-    <el-dialog v-el-drag-dialog :close-on-click-modal="false" :visible.sync="visible" :title="title" @dragDialog="handleDrag">
-      <div class="demo-input-suffix">
-        <label>参&#12288;数&#12288;名：</label>
-        <el-input
-          v-model="xtcsForm.paramCode"
-          placeholder="请输入"
-          style="width: 600px;"
-        />
+    <el-dialog
+      v-el-drag-dialog
+      :close-on-click-modal="false"
+      :visible.sync="visible"
+      :title="title"
+      style="width: 1400px;"
+      @dragDialog="handleDrag"
+    >
+      <div style="text-align: center; width: 100%">
+        <el-form
+          :inline="true"
+          :label-position="labelPosition"
+          label-width="80px"
+          :model="xtcsForm"
+          class="demo-form-inline"
+        >
+          <el-form-item label="参数名：">
+            <el-input
+              v-model="xtcsForm.paramCode"
+              style="width:400px"
+            />
+          </el-form-item>
+          <el-form-item label="参数名：">
+            <el-input
+              v-model="xtcsForm.paramValue"
+              type="textarea"
+              autosize
+              style="width:400px"
+            />
+          </el-form-item>
+          <el-form-item label="参数名：">
+            <el-input
+              v-model="xtcsForm.paramDesc"
+              type="textarea"
+              autosize
+              style="width:400px"
+            />
+          </el-form-item>
+        </el-form>
       </div>
-      <div class="demo-input-suffix">
-        <label>描&#12288;&#12288;&#12288;述：</label>
-        <el-input v-model="xtcsForm.paramValue" type="textarea" autosize placeholder="请输入" style="width: 600px;" />
-      </div>
-      <div class="demo-input-suffix">
-        <label>描&#12288;&#12288;&#12288;述：</label>
-        <el-input
-          v-model="xtcsForm.paramDesc"
-          type="textarea"
-          autosize
-          placeholder="请输入"
-          style="maxWidth: 600px;"
-        />
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="ok">保 存</el-button>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="ok"
+        >保 存</el-button>
         <el-button @click="cancel">取 消</el-button>
       </span>
     </el-dialog>
@@ -48,6 +71,7 @@ export default {
     return {
       visible: false,
       title: this.titles,
+      labelPosition: 'right',
       xtcsForm: {
         xh: '',
         paramCode: '',
@@ -85,7 +109,7 @@ export default {
         .then(_ => {
           this.visible = false
         })
-        .catch(_ => {})
+        .catch(_ => { })
     },
     save() {
       saveXtcs(this.xtcsForm).then(response => {
@@ -110,7 +134,7 @@ export default {
         .then(_ => {
           done()
         })
-        .catch(_ => {})
+        .catch(_ => { })
     }
   }
 }
