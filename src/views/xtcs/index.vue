@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      关键字：
+    <div class="filter-container" style="width: 900px;">
+      参数名：
       <el-input
         v-model="code"
-        value="empName"
+        value="code"
         placeholder="请输入"
         style="width: 200px;"
         class="filter-item"
@@ -19,6 +19,7 @@
       </el-button>
       <el-button
         :loading="downloadLoading"
+        :disabled="true"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
@@ -27,7 +28,8 @@
         下载模板
       </el-button>
       <el-button
-        :loading="downloadLoading"
+        :loading="uploadLoading"
+        :disabled="true"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
@@ -57,11 +59,6 @@
         :titles="title"
       />
     </div>
-    <!-- <div>
-      <copy-xtcs ref="copychild"
-                 :titles="title"
-                 :editdata="editdata" />
-    </div> -->
     <div class="app-container">
       <upload-excel-component
         ref="uploadexcel"
@@ -163,12 +160,12 @@ export default {
       show: false,
       // editdata: '',
       downloadLoading: false,
+      uploadLoading: false,
       empFile: null,
       total: 0,
       pages: 0,
       current: 1,
-      size: 10,
-      currentPage4: 4
+      size: 10
     }
   },
   methods: {
@@ -201,6 +198,12 @@ export default {
       getSystemParamBySearch(param).then(response => {
         if (response.success) {
           this.tableData = response.data.records
+          if (this.tableData.length == 0) {
+            this.$notify.success({
+              title: '成功',
+              message: '查询记录为空'
+            })
+          }
           this.total = response.data.total
           this.pages = response.data.pages
           this.current = response.data.current
@@ -217,7 +220,7 @@ export default {
       })
     },
     handleEdit(index, row) {
-      this.title = '编辑用户'
+      this.title = '编辑系统参数'
       this.$refs.editchild.init(row)
     },
     handleDelete(index, row) {
@@ -235,7 +238,7 @@ export default {
                 message: '删除成功',
                 type: 'success'
               })
-              this.Search()
+              this.Search(1)
             } else {
               this.$notify.error({
                 title: '错误',
@@ -279,7 +282,7 @@ export default {
       this.downloadLoading = false
     },
     clickUpload() {
-      this.downloadLoading = true
+      this.uploadLoading = true
       this.$refs.uploadexcel.handleUpload()
     },
     handleFile({ results }) {
@@ -297,7 +300,7 @@ export default {
           })
         }
       })
-      this.downloadLoading = false
+      this.uploadLoading = false
     }
   }
 }

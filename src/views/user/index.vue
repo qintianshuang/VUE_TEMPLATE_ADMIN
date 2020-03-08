@@ -1,34 +1,68 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <div class="filter-container" style="width: 900px;">
       姓名：
-      <el-input v-model="empName" value="empName" placeholder="请输入" style="width: 200px;" class="filter-item" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="Search">
+      <el-input
+        v-model="empName"
+        value="empName"
+        placeholder="请输入"
+        style="width: 200px;"
+        class="filter-item"
+      />
+      <el-button
+        class="filter-item"
+        type="primary"
+        icon="el-icon-search"
+        @click="Search(1)"
+      >
         查询
       </el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      <el-button
+        :loading="downloadLoading"
+        class="filter-item"
+        type="primary"
+        icon="el-icon-download"
+        @click="handleDownload"
+      >
         下载模板
       </el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="clickUpload">
+      <el-button
+        :loading="uploadLoading"
+        class="filter-item"
+        type="primary"
+        icon="el-icon-download"
+        @click="clickUpload"
+      >
         导入
       </el-button>
     </div>
     <div class="filter-container">
-      <el-button class="filter-item" type="primary" @click="add">
+      <el-button
+        class="filter-item"
+        type="primary"
+        @click="add"
+      >
         新增
       </el-button>
     </div>
     <div>
-      <add-user ref="addchild" :titles="title" />
+      <add-user
+        ref="addchild"
+        :titles="title"
+      />
     </div>
     <div>
-      <edit-user ref="editchild" :titles="title" />
+      <edit-user
+        ref="editchild"
+        :titles="title"
+      />
     </div>
-    <!-- <div>
-      <copy-user ref="copychild" :titles="title" :editdata="editdata" />
-    </div> -->
     <div class="app-container">
-      <upload-excel-component ref="uploadexcel" :out-file="handleFile" :before-upload="beforeUpload" />
+      <upload-excel-component
+        ref="uploadexcel"
+        :out-file="handleFile"
+        :before-upload="beforeUpload"
+      />
     </div>
     <el-table
       :data="tableData"
@@ -91,7 +125,7 @@
           <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="280">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -111,6 +145,19 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="block">
+      <el-pagination
+        :current-page="current"
+        :page-sizes="[5, 10, 15, 20]"
+        :total="total"
+        layout="total, sizes, prev, pager, next, jumper"
+        :page-size="size"
+        :pager-count="5"
+        :page-count="pages"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </div>
   </div>
 </template>
 
@@ -130,10 +177,23 @@ export default {
       title: '操作界面',
       show: false,
       downloadLoading: false,
-      empFile: null
+      uploadLoading: false,
+      empFile: null,
+      total: 0,
+      pages: 0,
+      current: 1,
+      size: 10
     }
   },
   methods: {
+    handleSizeChange(val) {
+      this.size = val
+      this.Search(1)
+    },
+    handleCurrentChange(val) {
+      this.current = val
+      this.Search(this.current)
+    },
     beforeUpload(file) {
       const isLt1M = file.size / 1024 / 1024 < 1
 
@@ -147,16 +207,26 @@ export default {
       })
       return false
     },
-    Search() {
+    Search(current) {
       const param = {
         name: this.empName,
-        page: '1',
-        limit: '10'
+        current: current,
+        size: this.size
       }
       this.listLoading = true
       queryEmpByName(param).then(response => {
         if (response.success) {
-          this.tableData = response.data
+          this.tableData = response.data.records
+          if (this.tableData.length == 0) {
+            this.$notify.success({
+              title: '成功',
+              message: '查询记录为空'
+            })
+          }
+          this.total = response.data.total
+          this.pages = response.data.pages
+          this.current = response.data.current
+          this.size = response.data.size
         } else {
           this.$notify.error({
             title: '错误',
@@ -188,7 +258,7 @@ export default {
                 message: '删除成功',
                 type: 'success'
               })
-              this.Search()
+              this.Search(1)
             } else {
               this.$notify.error({
                 title: '错误',
@@ -233,7 +303,7 @@ export default {
       this.downloadLoading = false
     },
     clickUpload() {
-      this.downloadLoading = true
+      this.uploadLoading = true
       this.$refs.uploadexcel.handleUpload()
     },
     handleFile({ results }) {
@@ -253,7 +323,7 @@ export default {
           })
         }
       })
-      this.downloadLoading = false
+      this.uploadLoading = false
     }
   }
 }
