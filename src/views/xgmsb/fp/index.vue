@@ -2,63 +2,69 @@
   <div class="app-container">
     <div
       class="filter-container;block"
-      style="width: 1000px;"
+      style="width: 1200px;"
     >
-      登记序号：
-      <el-input
-        v-model="djxh"
-        value="djxh"
-        placeholder="请输入"
-        style="width: 200px;"
-        class="filter-item"
-      />
-      &#12288;属期：
-      <el-date-picker
-        v-model="date"
-        type="month"
-        style="width: 150px;"
-        placeholder="选择月"
-        value-format="yyyy-MM-dd"
-      />
-      &#12288;是否显示失效数据：
-      <el-select v-model="value" placeholder="请选择" style="width: 100px;">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-      &#12288;
-      <el-button
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="Search(1)"
-      >
-        查询
-      </el-button>
-    </div>
-    <div class="filter-container">
-      <el-button
-        class="filter-item"
-        type="primary"
-        @click="add"
-      >
-        新增
-      </el-button>
-    </div>
-    <div>
-      <add-fp
-        ref="addchild"
-        :titles="title"
-      />
-    </div>
-    <div>
-      <edit-fp
-        ref="editchild"
-        :titles="title"
-      />
+      <el-form :inline="true" class="demo-form-inline">
+        <div>
+          <el-form-item label="登记序号：">
+            <el-input
+              v-model="djxh"
+              value="djxh"
+              placeholder="请输入"
+              style="width: 200px;"
+              class="filter-item"
+            />
+          </el-form-item>
+          <el-form-item label="所属期起：">
+            <el-date-picker
+              v-model="sssqq"
+              type="month"
+              style="width: 150px;"
+              placeholder="选择月"
+              value-format="yyyy-MM-dd"
+            />
+          </el-form-item>
+          <el-form-item label="-">
+            <el-date-picker
+              v-model="sssqz"
+              disabled
+              type="month"
+              style="width: 150px;"
+              placeholder="选择月"
+              value-format="yyyy-MM-dd"
+            />
+          </el-form-item>
+          <el-form-item label="是否显示失效数据：">
+            <el-select v-model="value" placeholder="请选择" style="width: 100px;">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              class="filter-item"
+              type="primary"
+              icon="el-icon-search"
+              @click="Search(1)"
+            >
+              查询
+            </el-button>
+          </el-form-item>
+        </div>
+        <div>
+          <el-button
+            class="filter-item"
+            type="primary"
+            @click="add"
+          >
+            新增
+          </el-button>
+        </div>
+      </el-form>
     </div>
     <el-table
       :data="tableData"
@@ -177,7 +183,7 @@
       <el-table-column
         label="所属期止"
         width="100"
-        prop="skssqq"
+        prop="skssqz"
       />
       <el-table-column
         label="专用发票自开不含税销售额—货物3%"
@@ -320,137 +326,26 @@
         @current-change="handleCurrentChange"
       />
     </div>
+    <div>
+      <add-fp
+        ref="addchild"
+        :titles="title"
+      />
+    </div>
+    <div>
+      <edit-fp
+        ref="editchild"
+        :titles="title"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import addFp from '@/components/xgmsb/fp/AddFp'
-import editFp from '@/components/xgmsb/fp/EditFp'
-import { getSystemParamBySearch, deleteXtcs, downloadEmpTemplate, exportEmpList } from '@/api/xtcs'
-import { getXgmfpxxBySearch, deleteFpData } from '@/api/xgm/fp'
-export default {
-  components: {
-    addFp, editFp
-  },
-  data() {
-    return {
-      djxh: '',
-      tableData: [],
-      title: '操作界面',
-      show: false,
-      date: '',
-      total: 0,
-      pages: 0,
-      current: 1,
-      size: 10,
-      value: 'N',
-      options: [{
-        value: 'N',
-        label: '不显示'
-      }, {
-        value: 'Y',
-        label: '显示'
-      }]
-    }
-  },
-  methods: {
-    handleSizeChange(val) {
-      this.size = val
-      this.Search(1)
-    },
-    handleCurrentChange(val) {
-      this.current = val
-      this.Search(this.current)
-    },
-    beforeUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
-      if (isLt1M) {
-        return true
-      }
-      this.$message({
-        message: 'Please do not upload files larger than 1m in size.',
-        type: 'warning'
-      })
-      return false
-    },
-    Search(current) {
-      const param = {
-        djxh: this.djxh,
-        sbsq: this.date,
-        isLoseData: this.value,
-        current: current,
-        size: this.size
-      }
-      this.listLoading = true
-      getXgmfpxxBySearch(param).then(response => {
-        if (response.success) {
-          this.tableData = response.data.records
-          if (this.tableData.length == 0) {
-            this.$notify.success({
-              title: '成功',
-              message: '查询记录为空'
-            })
-          }
-          this.total = response.data.total
-          this.pages = response.data.pages
-          this.current = response.data.current
-          this.size = response.data.size
-        } else {
-          this.$notify.error({
-            title: '错误',
-            message: response.message
-          })
-        }
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
-      })
-    },
-    handleEdit(index, row) {
-      this.title = '编辑发票参数'
-      this.$refs.editchild.init(row)
-    },
-    handleDelete(index, row) {
-      this.$confirm('确认删除？')
-        .then(_ => {
-          const param = {
-            djxh: row.djxh,
-            sssqq: row.skssqq,
-            sssqz: row.skssqz
-          }
-          deleteFpData(param).then(response => {
-            if (response.success) {
-              this.tableData = response.data
-              this.$notify({
-                title: '成功',
-                message: '删除成功',
-                type: 'success'
-              })
-              this.Search(1)
-            } else {
-              this.$notify.error({
-                title: '错误',
-                message: response.message
-              })
-            }
-            setTimeout(() => {
-              this.listLoading = false
-            }, 1.5 * 1000)
-          })
-        })
-        .catch(_ => { })
-    },
-    add() {
-      this.title = '新增发票参数'
-      this.$refs.addchild.init(null)
-    },
-    handleCopy(index, row) {
-      this.title = '复制发票参数'
-      this.$refs.addchild.init(row)
-    }
-  }
-}
+import index from './index.js'
+export default index
 </script>
+
 <style>
 .demo-table-expand {
   font-size: 0;
