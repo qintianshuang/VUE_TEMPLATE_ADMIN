@@ -1,12 +1,10 @@
 <template>
   <div class="components-container">
     <el-dialog
-      v-el-drag-dialog
       :close-on-click-modal="false"
       :visible.sync="visible"
       :title="title"
-      style="width: 1400px;"
-      @dragDialog="handleDrag"
+      style="width: 1800px;overflow:hidden;"
     >
       <div style="text-align: center; width: 100%">
         <el-form
@@ -19,23 +17,24 @@
           <el-form-item label="参数名：">
             <el-input
               v-model="xtcsForm.paramCode"
-              style="width:400px"
+              style="width:600px"
             />
           </el-form-item>
-          <el-form-item label="参数名：">
+          <el-form-item label="参数：">
             <el-input
               v-model="xtcsForm.paramValue"
               type="textarea"
               autosize
-              style="width:400px"
+              style="width:600px"
+              :autosize="{ minRows: 1, maxRows: 20}"
             />
           </el-form-item>
-          <el-form-item label="参数名：">
+          <el-form-item label="描述：">
             <el-input
               v-model="xtcsForm.paramDesc"
               type="textarea"
               autosize
-              style="width:400px"
+              style="width:600px"
             />
           </el-form-item>
         </el-form>
@@ -97,10 +96,6 @@ export default {
         this.xtcsForm.paramDesc = data.paramDesc
       }
     },
-    // v-el-drag-dialog onDrag callback function
-    handleDrag() {
-      this.$refs.select.blur()
-    },
     ok() {
       this.save()
     },
@@ -125,8 +120,8 @@ export default {
             title: '错误',
             message: response.message
           })
-          return
         }
+        this.$parent.Search(1)
       })
     },
     handleClose(done) {

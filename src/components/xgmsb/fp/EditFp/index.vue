@@ -1,93 +1,107 @@
 <template>
   <div class="components-container">
     <el-dialog
-      v-el-drag-dialog
       :close-on-click-modal="false"
       :visible.sync="visible"
       :title="title"
-      style="width: 2000px;"
-      @dragDialog="handleDrag"
+      style="width:2200px;heigth:600px;top:-10%"
     >
-      <el-form :inline="true" :label-position="labelPosition" label-width="250px" :model="fpForm" class="demo-form-inline">
-        <el-form-item label="登记序号：">
-          <el-input v-model="fpForm.djxh" />
-        </el-form-item>
-        <el-form-item label="纳税人识别号：">
-          <el-input v-model="fpForm.nsrsbh" />
-        </el-form-item>
-        <el-form-item label="社会信用代码：">
-          <el-input v-model="fpForm.shxydm" />
-        </el-form-item>
-        <el-form-item label="所属期起：">
-          <el-input v-model="fpForm.skssqq" />
-        </el-form-item>
-        <el-form-item label="所属期止：">
-          <el-input v-model="fpForm.skssqz" />
-        </el-form-item>
-        <el-form-item label="专用发票自开不含税销售额-货物3%：">
-          <el-input v-model="fpForm.zyfpzkbhsxseHw" />
-        </el-form-item>
-        <el-form-item label="专用发票自开不含税销售额-服物3%：">
-          <el-input v-model="fpForm.zyfpzkbhsxseFw1" />
-        </el-form-item>
-        <el-form-item label="专用发票自开不含税销售额-服物5%：">
-          <el-input v-model="fpForm.zyfpzkbhsxseFw2" />
-        </el-form-item>
-        <el-form-item label="专用发票代开不含税销售额-货物3%：">
-          <el-input v-model="fpForm.zyfpdkbhsxseHw" />
-        </el-form-item>
-        <el-form-item label="专用发票代开不含税销售额-服务3%：">
-          <el-input v-model="fpForm.zyfpdkbhsxseFw1" />
-        </el-form-item>
-        <el-form-item label="专用发票代开不含税销售额-服务5%：">
-          <el-input v-model="fpForm.zyfpdkbhsxseFw2" />
-        </el-form-item>
-        <el-form-item label="普通发票自开不含税销售额-货物3%：">
-          <el-input v-model="fpForm.ptfpzkbhsxseHw" />
-        </el-form-item>
-        <el-form-item label="普通发票自开不含税销售额-服务3%：">
-          <el-input v-model="fpForm.ptfpzkbhsxseFw1" />
-        </el-form-item>
-        <el-form-item label="普通发票自开不含税销售额-服务5%：">
-          <el-input v-model="fpForm.ptfpzkbhsxseFw2" />
-        </el-form-item>
-        <el-form-item label="普通发票代开不含税销售额-货物3%：">
-          <el-input v-model="fpForm.ptfpdkbhsxseHw" />
-        </el-form-item>
-        <el-form-item label="普通发票代开不含税销售额-服务3%：">
-          <el-input v-model="fpForm.ptfpdkbhsxseFw1" />
-        </el-form-item>
-        <el-form-item label="普通发票代开不含税销售额-服务5%：">
-          <el-input v-model="fpForm.ptfpdkbhsxseFw2" />
-        </el-form-item>
-        <el-form-item label="销售不动产普通发票：">
-          <el-input v-model="fpForm.xsbdcptfp" />
-        </el-form-item>
-        <el-form-item label="销售不动产专用发票：">
-          <el-input v-model="fpForm.xsbdczyfp" />
-        </el-form-item>
-        <el-form-item label="开票系统免税销售额：">
-          <el-input v-model="fpForm.kpxtmsxse" />
-        </el-form-item>
-        <el-form-item label="网络发票：">
-          <el-input v-model="fpForm.wlfp" />
-        </el-form-item>
-        <el-form-item label="专用发票自开不含税销售额：">
-          <el-input v-model="fpForm.zyfpzkbhsxse" />
-        </el-form-item>
-        <el-form-item label="普通发票自开不含税销售额：">
-          <el-input v-model="fpForm.ptfpzkbhsxse" />
-        </el-form-item>
-        <el-form-item label="专用发票代开不含税销售额：">
-          <el-input v-model="fpForm.zyfpdkbhsxse" />
-        </el-form-item>
-        <el-form-item label="普通发票代开不含税销售额：">
-          <el-input v-model="fpForm.ptfpdkbhsxse" />
-        </el-form-item>
-        <el-form-item label="操报状态：">
-          <el-input v-model="fpForm.cbzt" />
-        </el-form-item>
-      </el-form>
+      <div>
+        <el-form :inline="true" :label-position="labelPosition" label-width="300px" style="heigth:400px" :model="fpForm" class="demo-form-inline">
+          <el-form-item label="登记序号：">
+            <el-input v-model="fpForm.djxh" disabled class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="所属期起：">
+            <el-date-picker
+              v-model="sssqq"
+              type="month"
+              style="width: 180px;"
+              placeholder="选择月"
+              value-format="yyyy-MM-dd"
+            />
+          </el-form-item>
+          <el-form-item label="所属期止：">
+            <el-date-picker
+              v-model="sssqz"
+              disabled
+              type="month"
+              style="width: 180px;"
+              placeholder="选择月"
+              value-format="yyyy-MM-dd"
+            />
+          </el-form-item>
+          <el-form-item label="专用发票自开不含税销售额-货物3%：">
+            <el-input v-model="fpForm.zyfpzkbhsxseHw" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="专用发票自开不含税销售额-服物3%：">
+            <el-input v-model="fpForm.zyfpzkbhsxseFw1" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="专用发票自开不含税销售额-服物5%：">
+            <el-input v-model="fpForm.zyfpzkbhsxseFw2" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="专用发票代开不含税销售额-货物3%：">
+            <el-input v-model="fpForm.zyfpdkbhsxseHw" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="专用发票代开不含税销售额-服务3%：">
+            <el-input v-model="fpForm.zyfpdkbhsxseFw1" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="专用发票代开不含税销售额-服务5%：">
+            <el-input v-model="fpForm.zyfpdkbhsxseFw2" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="普通发票自开不含税销售额-货物3%：">
+            <el-input v-model="fpForm.ptfpzkbhsxseHw" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="普通发票自开不含税销售额-服务3%：">
+            <el-input v-model="fpForm.ptfpzkbhsxseFw1" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="普通发票自开不含税销售额-服务5%：">
+            <el-input v-model="fpForm.ptfpzkbhsxseFw2" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="普通发票代开不含税销售额-货物3%：">
+            <el-input v-model="fpForm.ptfpdkbhsxseHw" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="普通发票代开不含税销售额-服务3%：">
+            <el-input v-model="fpForm.ptfpdkbhsxseFw1" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="普通发票代开不含税销售额-服务5%：">
+            <el-input v-model="fpForm.ptfpdkbhsxseFw2" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="销售不动产普通发票：">
+            <el-input v-model="fpForm.xsbdcptfp" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="销售不动产专用发票：">
+            <el-input v-model="fpForm.xsbdczyfp" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="开票系统免税销售额：">
+            <el-input v-model="fpForm.kpxtmsxse" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="网络发票：">
+            <el-input v-model="fpForm.wlfp" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="专用发票自开不含税销售额：">
+            <el-input v-model="fpForm.zyfpzkbhsxse" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="普通发票自开不含税销售额：">
+            <el-input v-model="fpForm.ptfpzkbhsxse" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="专用发票代开不含税销售额：">
+            <el-input v-model="fpForm.zyfpdkbhsxse" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="普通发票代开不含税销售额：">
+            <el-input v-model="fpForm.ptfpdkbhsxse" class="el-input-style" />
+          </el-form-item>
+          <el-form-item label="操报状态：">
+            <el-select v-model="cbzt" placeholder="请选择" style="width: 180px;">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
       <span
         slot="footer"
         class="dialog-footer"
@@ -105,7 +119,7 @@
 import elDragDialog from '@/directive/el-drag-dialog' // base on element-ui
 import { string } from 'jszip/lib/support'
 import { editFpData } from '@/api/xgm/fp'
-
+const moment = require('moment')
 export default {
   name: 'EditFp',
   directives: { elDragDialog },
@@ -120,6 +134,9 @@ export default {
       visible: false,
       title: this.titles,
       labelPosition: 'right',
+      sssqq: '',
+      sssqz: '',
+      cbzt: '',
       fpForm: {
         djxh: '',
         nsrsbh: '',
@@ -154,12 +171,28 @@ export default {
         hyzp: '',
         jsfp: '',
         dzfp: ''
-      }
+      },
+      options: [{
+        value: 'Y',
+        label: 'Y'
+      }, {
+        value: 'F',
+        label: 'F'
+      }, {
+        value: 'Z',
+        label: 'Z'
+      }, {
+        value: 'N',
+        label: 'N'
+      }]
     }
   },
   watch: {
     titles() {
       this.title = this.titles
+    },
+    cbzt() {
+      this.fpForm.cbzt = this.cbzt
     }
   },
   methods: {
@@ -198,6 +231,9 @@ export default {
       this.fpForm.hyzp = ''
       this.fpForm.jsfp = ''
       this.fpForm.dzfp = ''
+      this.sssqq = ''
+      this.sssqz = ''
+      this.cbzt = ''
       if (data != null) {
         this.fpForm.djxh = data.djxh
         this.fpForm.nsrsbh = data.nsrsbh
@@ -232,11 +268,10 @@ export default {
         this.fpForm.hyzp = data.hyzp
         this.fpForm.jsfp = data.jsfp
         this.fpForm.dzfp = data.dzfp
+        this.sssqq = moment(data.skssqq).format('YYYY-MM-DD')
+        this.sssqz = moment(data.skssqz).format('YYYY-MM-DD')
+        this.cbzt = data.cbzt
       }
-    },
-    // v-el-drag-dialog onDrag callback function
-    handleDrag() {
-      this.$refs.select.blur()
     },
     ok() {
       this.save()
@@ -264,6 +299,7 @@ export default {
           })
           return
         }
+        this.$parent.Search(1)
       })
     },
     handleClose(done) {
@@ -280,6 +316,26 @@ export default {
 .text_right{
     display:inline-block;
     width:100px;
-	 text-align:right;
+	  text-align:right;
 }
+.el-input-style{
+   width: 180px;
+}
+/* .el-dialog-css{
+      width: 2200px;
+      height: 800px;
+      /* display: flex;
+      flex-direction: column;
+      margin:0 !important;
+      /* position:absolute;
+      top:-10%;
+      /* left:50%;
+      /* transform:translate(-50%,-50%);  */
+      /* max-height:calc(100% - 10px);
+      max-width:calc(100% - 10px); */
+   /*}
+   .el-dialog .el-dialog__body{
+       flex:1;
+       overflow:hidden;
+   } */
 </style>
