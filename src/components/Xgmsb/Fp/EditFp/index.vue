@@ -14,6 +14,7 @@
           <el-form-item label="所属期起：">
             <el-date-picker
               v-model="sssqq"
+              disabled
               type="month"
               style="width: 180px;"
               placeholder="选择月"

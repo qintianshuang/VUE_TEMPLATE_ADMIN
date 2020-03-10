@@ -158,10 +158,6 @@
             class="el-input-style"
           />
         </el-form-item>
-        <!-- <el-form-item label="操报状态：">
-          <el-input v-model="fpForm.cbzt"
-                    class="el-input-style" />
-        </el-form-item> -->
         <el-form-item label="操报状态：">
           <el-select v-model="cbzt" placeholder="请选择" style="width: 180px;">
             <el-option
