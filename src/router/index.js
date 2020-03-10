@@ -158,9 +158,9 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'hd',
-        component: () => import('@/views/xgmsb/hd'),
-        name: 'Hd',
+        path: 'bw',
+        component: () => import('@/views/xgmsb/bw'),
+        name: 'Bw',
         meta: {
           title: '核定数据',
           roles: ['admin'] // or you can only set roles in sub nav
