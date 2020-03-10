@@ -156,6 +156,15 @@ export const asyncRoutes = [
           title: '发票数据',
           roles: ['admin'] // or you can only set roles in sub nav
         }
+      },
+      {
+        path: 'hd',
+        component: () => import('@/views/xgmsb/hd'),
+        name: 'Hd',
+        meta: {
+          title: '核定数据',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
       }
     ]
   },
