@@ -342,7 +342,7 @@
 </template>
 
 <script>
-import index from './index.js'
+import index from '@/scripts/xgmsb/fp/index'
 export default index
 </script>
 

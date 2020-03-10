@@ -3,8 +3,8 @@
     <div class="filter-container" style="width: 900px;">
       <el-form :inline="true" class="demo-form-inline">
         <div>
-          <el-form-item label="参数名：">
-            <el-input v-model="code" placeholder="审批人" />
+          <el-form-item label="姓名：">
+            <el-input v-model="empName" placeholder="姓名：" />
           </el-form-item>
           <el-form-item>
             <el-button
@@ -19,7 +19,6 @@
           <el-form-item>
             <el-button
               :loading="downloadLoading"
-              :disabled="true"
               class="filter-item"
               type="primary"
               icon="el-icon-download"
@@ -31,7 +30,6 @@
           <el-form-item>
             <el-button
               :loading="uploadLoading"
-              :disabled="true"
               class="filter-item"
               type="primary"
               icon="el-icon-download"
@@ -58,41 +56,62 @@
       style="width: 100%"
     >
       <el-table-column
-        label="编号"
-        width="200"
+        label="姓名"
+        width="180"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.xh }}</span>
+          <span>{{ scope.row.empName }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="参数名"
-        width="280"
+        label="年龄"
+        width="180"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.paramCode }}</span>
+          <span>{{ scope.row.age }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="参数"
-        width="480"
+        label="身份证号码"
+        width="180"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.paramValue }}</span>
+          <span>{{ scope.row.identityCard }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="描述"
-        width="380"
+        label="家庭住址"
+        width="240"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.paramDesc }}</span>
+          <span>{{ scope.row.liveAddress }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="操作"
-        width="280"
+        label="现居住地址"
+        width="240"
       >
+        <template slot-scope="scope">
+          <span>{{ scope.row.familyAddress }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="电话号码"
+        width="180"
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.phone }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="邮箱"
+        width="180"
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.email }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="280">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -126,13 +145,13 @@
       />
     </div>
     <div>
-      <add-xtcs
+      <add-emp
         ref="addchild"
         :titles="title"
       />
     </div>
     <div>
-      <edit-xtcs
+      <edit-emp
         ref="editchild"
         :titles="title"
       />
@@ -147,6 +166,6 @@
   </div>
 </template>
 <script>
-import index from '@/scripts/xtcs/index'
+import index from '@/scripts/emp/index'
 export default index
 </script>
