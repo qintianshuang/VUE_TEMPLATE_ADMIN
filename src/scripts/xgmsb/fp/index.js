@@ -1,5 +1,5 @@
-import addFp from '@/components/xgmsb/fp/AddFp'
-import editFp from '@/components/xgmsb/fp/EditFp'
+import addFp from '@/components/Xgmsb/Fp/AddFp'
+import editFp from '@/components/Xgmsb/Fp/EditFp'
 import { getXgmfpxxBySearch, deleteFpData } from '@/api/xgm/fp'
 export default {
   components: {

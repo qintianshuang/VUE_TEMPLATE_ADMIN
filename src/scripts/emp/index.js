@@ -1,5 +1,5 @@
-import addEmp from '@/components/emp/AddEmp'
-import editEmp from '@/components/emp/EditEmp'
+import addEmp from '@/components/Emp/AddEmp'
+import editEmp from '@/components/Emp/EditEmp'
 import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import { queryEmpByName, deleteEmployee, downloadEmpTemplate, exportEmpList } from '@/api/employee'
 export default {
