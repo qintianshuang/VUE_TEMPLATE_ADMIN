@@ -18,7 +18,7 @@ import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
-
+import moment from 'moment'
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -40,7 +40,9 @@ Vue.use(Element, {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
-
+Vue.filter('dateformat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+  return moment(dataStr).format(pattern)
+})
 Vue.config.productionTip = false
 Vue.prototype.$Notice = Element
 
