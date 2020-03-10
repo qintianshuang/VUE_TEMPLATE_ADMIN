@@ -93,7 +93,7 @@ export const asyncRoutes = [
   {
     path: '/emp',
     component: Layout,
-    redirect: '/emp/index',
+    redirect: '/emp',
     alwaysShow: true, // will always show the root menu
     name: 'Emp',
     meta: {
@@ -103,8 +103,8 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'Emp',
-        component: () => import('@/views/emp/index'),
+        path: 'emp',
+        component: () => import('@/views/emp'),
         name: 'emp',
         meta: {
           title: '用户查询',
@@ -116,7 +116,7 @@ export const asyncRoutes = [
   {
     path: '/xtcs',
     component: Layout,
-    redirect: '/xtcs/index',
+    redirect: '/xtcs',
     alwaysShow: true, // will always show the root menu
     name: 'Xtcs',
     meta: {
@@ -127,7 +127,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'xtcs',
-        component: () => import('@/scripts/xtcs/index'),
+        component: () => import('@/views/xtcs'),
         name: 'Xtcs',
         meta: {
           title: '系统数据',
@@ -139,7 +139,7 @@ export const asyncRoutes = [
   {
     path: '/xgmsb',
     component: Layout,
-    redirect: '/xgmsb/index',
+    redirect: '/xgmsb/fp/',
     alwaysShow: true, // will always show the root menu
     name: 'Xgmsb',
     meta: {
@@ -150,7 +150,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'fp',
-        component: () => import('@/views/xgmsb/fp/index'),
+        component: () => import('@/views/xgmsb/fp'),
         name: 'Fp',
         meta: {
           title: '发票数据',
