@@ -120,13 +120,8 @@ export const asyncRoutes = [
     alwaysShow: true, // will always show the root menu
     name: 'Xtcs',
     meta: {
-<<<<<<< HEAD
       title: '公共数据',
       icon: 'component',
-=======
-      title: '系统设置',
-      icon: 'peoples',
->>>>>>> parent of 9db01b1... 更新代码
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
     children: [

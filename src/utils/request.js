@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'
 // create an axios instance  192.168.43.178
 const service = axios.create({
   // baseURL: 'http://www.myadmin.com',
-  baseURL: 'http://192.168.124.5:8783',
+  baseURL: 'http://localhost:8783',
   // baseURL: '/api',
   // url = base url + request url 192.168.72.1
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
